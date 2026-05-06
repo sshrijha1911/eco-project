@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Carbon Calculator</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: linear-gradient(-45deg, #4facfe, #00f2fe, #43e97b, #38f9d7);
+  background-size: 400% 400%;
+  animation: bg 8s infinite;
+  text-align: center;
+}
+
+@keyframes bg {
+  0% {background-position:0%}
+  50% {background-position:100%}
+  100% {background-position:0%}
+}
+
+.container {
+  width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+}
+
+select, button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 10px;
+}
+
+button {
+  background: green;
+  color: white;
+  border: none;
+}
+
+.result-card {
+  background: white;
+  color: black;
+  padding: 15px;
+  border-radius: 15px;
+  margin-top: 10px;
+}
+
+.progress {
+  height: 20px;
+  background: #ddd;
+  border-radius: 10px;
+}
+#bar {
+  height: 100%;
+  width: 0%;
+  background: green;
+  border-radius: 10px;
+}
+
+/* Chat */
+.chat-box {
+  height: 200px;
+  overflow-y: auto;
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+}
+.msg {padding:8px;margin:5px;border-radius:10px;}
+.user {background:#4facfe;color:white;text-align:right;}
+.bot {background:#eee;}
+</style>
+
+</head>
+
+<body>
+
+<h1>🌿 Carbon Footprint 🌍</h1>
+
+<div class="container">
+
+<select id="t">
+  <option value="50">🚗 Car</option>
+  <option value="30">🚌 Bus</option>
+  <option value="10">🚶 Walk</option>
+</select>
+
+<select id="e">
+  <option value="50">⚡ High Electricity</option>
+  <option value="30">⚡ Medium</option>
+  <option value="10">⚡ Low</option>
+</select>
+
+<select id="f">
+  <option value="50">🍗 Non-Veg</option>
+  <option value="30">🍛 Mixed</option>
+  <option value="10">🌱 Veg</option>
+</select>
+
+<button onclick="calc()">Calculate</button>
+
+<div class="result-card">
+  <h2 id="score"></h2>
+  <p id="msg"></p>
+  <div class="progress"><div id="bar"></div></div>
+</div>
+
+</div>
+
+<!-- Chatbot -->
+<div class="container">
+<h2>🤖 Eco Assistant</h2>
+<div class="chat-box" id="chat"></div>
+<input id="inp" placeholder="Ask...">
+<button onclick="send()">Send</button>
+</div>
+
+<script>
+function calc(){
+ let total =
+  +t.value + +e.value + +f.value;
+
+ let level, msg;
+
+ if(total<=60){
+  level="Low ✅";
+  msg="Great eco habits 🌱";
+ }
+ else if(total<=100){
+  level="Medium ⚠️";
+  msg="Improve slightly";
+ }
+ else{
+  level="High ❌";
+  msg="Reduce footprint now!";
+ }
+
+ document.getElementById("score").innerText="Score: "+total+" ("+level+")";
+ document.getElementById("msg").innerText=msg;
+ document.getElementById("bar").style.width=total+"%";
+}
+
+function send(){
+ let txt=inp.value;
+ if(!txt) return;
+
+ add(txt,"user");
+
+ let r="Live eco-friendly 🌍";
+ if(txt.includes("water")) r="Save water 💧";
+ if(txt.includes("plastic")) r="Avoid plastic ♻️";
+ if(txt.includes("energy")) r="Save electricity ⚡";
+
+ setTimeout(()=>add(r,"bot"),500);
+ inp.value="";
+}
+
+function add(t,c){
+ let d=document.createElement("div");
+ d.className="msg "+c;
+ d.innerText=t;
+ chat.appendChild(d);
+ chat.scrollTop=999;
+}
+</script>
+
+</body>
+</html>
